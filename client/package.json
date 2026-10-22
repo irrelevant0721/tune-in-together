@@ -1,0 +1,53 @@
+{
+  "name": "openmusic-client",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc -b --pretty false",
+    "test": "npm run check:header-actions && tsx --test src/lib/accountSessionSignal.test.ts src/lib/avatarImage.test.ts src/lib/favoritesSync.test.ts src/lib/socketSessionRefresh.test.ts src/lib/startupSplash.test.ts && npm run check:lrc && npm run check:room-visuals && npm run typecheck",
+    "check:lrc": "tsx scripts/check-lrc-offset.ts",
+    "check:header-actions": "node scripts/check-header-action-style.mjs",
+    "check:room-visuals": "tsx scripts/check-room-visuals.ts",
+    "build": "vite build",
+    "build:check": "npm run typecheck && npm run check:antd-boundary && npm run build",
+    "check:antd-boundary": "node scripts/check-antd-boundary.mjs",
+    "preview": "vite preview",
+    "build:apk": "node ../mobile/scripts/build-flutter-apk.mjs --release"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^6.3.2",
+    "@gsap/react": "^2.1.2",
+    "@mediapipe/tasks-vision": "^0.10.21",
+    "@react-three/fiber": "^8.18.0",
+    "@types/qrcode": "^1.5.6",
+    "antd": "^6.5.1",
+    "gsap": "^3.15.0",
+    "lucide-react": "^0.469.0",
+    "ogl": "^1.0.11",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "7.18.2",
+    "react-window": "^1.8.10",
+    "socket.io-client": "^4.8.1",
+    "three": "^0.170.0",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/react-window": "^1.8.8",
+    "@types/three": "^0.170.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.6",
+    "vite-plugin-compression2": "^2.5.3"
+  }
+}

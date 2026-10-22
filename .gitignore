@@ -1,0 +1,80 @@
+node_modules/
+dist/
+.env
+*.log
+*.tsbuildinfo
+.DS_Store
+.idea/
+release/
+server/.env
+server/runtimeConfig.json
+server/adminCredentials.json
+server/siteBans.json
+server/adminConfig.json
+server/setup.lock
+client/.env.capacitor
+server/downloads/*.apk
+server/downloads/*.ipa
+server/downloads/*.exe
+.playwright-mcp
+.codex/
+
+# Docker 部署持久化目录（deploy/deploy.sh docker 生成）
+/data/
+
+# Capacitor / Android 本地构建产物
+client/android/.gradle/
+client/android/app/build/
+client/android/build/
+client/android/local.properties
+client/android/.idea/
+client/android/captures/
+client/android/*.iml
+
+# Capacitor / iOS 本地构建产物
+client/build/ios/
+client/build/ipa/
+
+# Local release workflow (not distributed)
+.github/workflows/release.yml
+
+# Flutter mobile 本地构建产物（mobile/.gitignore 的补充）
+mobile/.dart_tool/
+mobile/build/
+mobile/android/.gradle/
+mobile/android/.kotlin/
+mobile/android/**/build/
+mobile/android/**/.cxx/
+mobile/android/**/.externalNativeBuild/
+mobile/ios/Pods/
+mobile/ios/Flutter/ephemeral/
+mobile/windows/flutter/ephemeral/
+mobile/linux/flutter/ephemeral/
+mobile/macos/Flutter/ephemeral/
+mobile/.android-version.local
+
+# Electron 桌面客户端构建产物
+dow/
+
+desktop-build.local.json
+
+electron/desktop-runtime-config.json
+# Local deployment backups may contain runtime configuration.
+deployment-backups/
+admin-access.txt
+
+# Local previews and host-specific tunnel helpers
+/artifacts/
+/*-preview.png
+/connect-domain.ps1
+**/.env.*
+!**/.env.example
+!**/.env.full.example
+**/*.jks
+**/*.keystore
+**/key.properties
+
+# Local operational verification records
+/VERIFICATION.md
+/docs/WECHAT-COMPANION-LIVE-VERIFICATION.md
+/docs/WECHAT-COMPANION-VERIFICATION.md

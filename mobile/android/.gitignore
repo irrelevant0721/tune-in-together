@@ -1,0 +1,22 @@
+.gradle/
+**/local.properties
+key.properties
+**/*.keystore
+**/*.jks
+
+# Gradle / Android Studio 构建产物
+**/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# APK / AAB
+**/*.apk
+**/*.aab
+
+# 生成文件
+**/GeneratedPluginRegistrant.java
+**/GeneratedPluginRegistrant.kt
+
+# 不提交 gradle wrapper jar（由 wrapper 任务生成）
+gradle-wrapper.jar

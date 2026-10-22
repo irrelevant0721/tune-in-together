@@ -1,0 +1,120 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: client
+
+      - name: Run tests
+        run: npm test
+        working-directory: client
+
+      - name: Typecheck + antd import boundary + build
+        run: npm run build:check
+        working-directory: client
+
+  server:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      TEST_REDIS_URL: redis://127.0.0.1:6379/15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: server
+
+      - name: Syntax check all server files
+        run: |
+          for f in $(find . -name '*.js' -not -path './node_modules/*'); do
+            node --check "$f" || exit 1
+          done
+        working-directory: server
+
+      - name: Run ESLint
+        run: npm run lint
+        working-directory: server
+
+      - name: Run tests
+        run: npm test
+        working-directory: server
+
+  mobile:
+    runs-on: ubuntu-latest
+    env:
+      # CI 只使用公开 pub.dev 包；隔离用户级 Dart 配置以避免缓存或 runner 中的无效令牌导致 403。
+      XDG_CONFIG_HOME: /tmp/dart-config
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: mobile
+
+      - name: Analyze
+        run: flutter analyze
+        working-directory: mobile
+
+      - name: Run tests
+        run: flutter test
+        working-directory: mobile
+
+  compose:
+    runs-on: ubuntu-latest
+    env:
+      METING_ADMIN_PATH: 'ci-random-admin-path'
+      METING_ADMIN_USERNAME: 'ci-admin-user'
+      METING_ADMIN_PASSWORD: 'ci-long-random-password'
+      ROOM_CREDENTIAL_ENCRYPTION_KEY: '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Compose files and file bind mounts
+        run: |
+          bash -n install.sh deploy/deploy.sh
+          for compose_file in docker-compose.yml docker-compose.full.yml; do
+            docker compose -f "$compose_file" config --quiet
+            python3 -c 'from pathlib import Path; import re,sys; text=Path(sys.argv[1]).read_text(encoding="utf-8"); names=[".env","runtimeConfig.json","adminConfig.json","setup.lock"]; invalid=[name for name in names if not re.search(rf"- type: bind\s+source: \./data/{re.escape(name)}\s+target: /app/server/{re.escape(name)}\s+bind:\s+create_host_path: false", text)]; assert not invalid, f"unsafe config file binds in {sys.argv[1]}: {invalid}"' "$compose_file"
+          done

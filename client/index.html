@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (() => {
+        let theme = 'dark';
+        try { if (localStorage.getItem('openmusic:friends-theme') === 'light') theme = 'light'; } catch {}
+        document.documentElement.dataset.friendsTheme = theme;
+      })();
+    </script>
+    <style>
+      html[data-friends-theme=dark] { color-scheme: dark; background: #11151c; }
+      html[data-friends-theme=dark] body { background: #11151c; color: #f0f3f8; }
+      html[data-friends-theme=light] { color-scheme: light; background: #f3f6f8; }
+      html[data-friends-theme=light] body { background: #f3f6f8; color: #1c2b38; }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="description" content="OpenMusic 是一款免费的在线一起听歌平台，支持多人实时同步播放、共同点歌与边听边聊。无论情侣异地、室友宿舍还是远方好友，只需创建房间并分享链接，就能同步听同一首歌。支持全网曲库搜索与歌词实时滚动，打开浏览器即可使用，无需下载安装客户端。" />
+    <meta name="keywords" content="一起听歌,多人听歌,和朋友一起听歌,在线一起听歌,情侣一起听歌,异地一起听歌,同步听歌,OpenMusic" />
+    <meta name="author" content="OpenMusic" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <!-- __BAIDU_SITE_VERIFICATION__ -->
+    <meta name="theme-color" content="#ec4141" />
+    <meta name="application-name" content="OpenMusic" />
+    <meta name="apple-mobile-web-app-title" content="OpenMusic" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <link rel="canonical" href="__SITE_ORIGIN__/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:site_name" content="OpenMusic" />
+    <meta property="og:title" content="一起听歌 - 和喜欢的人 听同一首歌 | OpenMusic" />
+    <meta property="og:description" content="OpenMusic 是一款免费的在线一起听歌平台，支持多人实时同步播放、共同点歌与边听边聊。无论情侣异地、室友宿舍还是远方好友，只需创建房间并分享链接，就能同步听同一首歌。支持全网曲库搜索与歌词实时滚动，打开浏览器即可使用，无需下载安装客户端。" />
+    <meta property="og:url" content="__SITE_ORIGIN__/" />
+    <meta property="og:image" content="__SITE_ORIGIN__/og-cover.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="一起听歌 - 和喜欢的人 听同一首歌 | OpenMusic" />
+    <meta name="twitter:description" content="OpenMusic 是一款免费的在线一起听歌平台，支持多人实时同步播放、共同点歌与边听边聊。无论情侣异地、室友宿舍还是远方好友，只需创建房间并分享链接，就能同步听同一首歌。支持全网曲库搜索与歌词实时滚动，打开浏览器即可使用，无需下载安装客户端。" />
+    <meta name="twitter:image" content="__SITE_ORIGIN__/og-cover.png" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <style>
+      @media (max-width: 640px) { html { font-size: 14px; } }
+      @media (min-width: 641px) { html { font-size: 16px; } }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Figtree:wght@400;500;600&family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=LXGW+WenKai&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@400;700;900&family=UnifrakturCook:wght@700&display=swap"
+    />
+
+    <title>一起听歌 - 和喜欢的人 听同一首歌 | OpenMusic</title>
+    <script type="application/ld+json" id="openmusic-json-ld">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "OpenMusic",
+        "alternateName": ["一起听歌", "多人听歌", "和朋友一起听歌", "点歌房"],
+        "description": "OpenMusic 是一款免费的在线一起听歌平台，支持多人实时同步播放、共同点歌与边听边聊。无论情侣异地、室友宿舍还是远方好友，只需创建房间并分享链接，就能同步听同一首歌。支持全网曲库搜索与歌词实时滚动，打开浏览器即可使用，无需下载安装客户端。",
+        "url": "__SITE_ORIGIN__/",
+        "applicationCategory": "MusicApplication",
+        "operatingSystem": "Web Browser",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+        "inLanguage": "zh-CN",
+        "featureList": [
+          "多人房间进度实时同步",
+          "支持轮流点歌与播放列表",
+          "异地远程也能同听一首歌",
+          "边听边聊，宿舍聚会也适用"
+        ],
+        "publisher": {
+          "@type": "Organization",
+          "name": "OpenMusic",
+          "url": "__SITE_ORIGIN__/"
+        }
+      }
+    </script>
+    <script type="application/ld+json" id="openmusic-breadcrumb-json-ld">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首页",
+            "item": "__SITE_ORIGIN__/"
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="seo-bootstrap" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">
+      <h1>一起听歌 - 和喜欢的人 听同一首歌</h1>
+    </div>
+    <noscript>
+      <div style="max-width:720px;margin:2rem auto;padding:0 1rem;font-family:system-ui,sans-serif;line-height:1.6;">
+        <h1>一起听歌 - 和喜欢的人 听同一首歌 | OpenMusic</h1>
+        <p>OpenMusic 是一款免费的在线一起听歌平台，支持多人实时同步播放、共同点歌与边听边聊。请启用 JavaScript 以使用完整功能。</p>
+      </div>
+    </noscript>
+    <svg id="control-glass-svg" class="control-glass-filter-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="mineradio-control-glass-filter" color-interpolation-filters="sRGB" x="-12%" y="-28%" width="124%" height="156%">
+          <feImage id="control-glass-map" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="map"></feImage>
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="180" xChannelSelector="R" yChannelSelector="B" result="dispRed"></feDisplacementMap>
+          <feOffset in="dispRed" dx="-90" dy="0" result="dispRedShifted"></feOffset>
+          <feMerge result="dispRedAligned"><feMergeNode in="SourceGraphic"></feMergeNode><feMergeNode in="dispRedShifted"></feMergeNode></feMerge>
+          <feColorMatrix in="dispRedAligned" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red"></feColorMatrix>
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="170" xChannelSelector="R" yChannelSelector="B" result="dispGreen"></feDisplacementMap>
+          <feOffset in="dispGreen" dx="-90" dy="0" result="dispGreenShifted"></feOffset>
+          <feMerge result="dispGreenAligned"><feMergeNode in="SourceGraphic"></feMergeNode><feMergeNode in="dispGreenShifted"></feMergeNode></feMerge>
+          <feColorMatrix in="dispGreenAligned" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="green"></feColorMatrix>
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="160" xChannelSelector="R" yChannelSelector="B" result="dispBlue"></feDisplacementMap>
+          <feOffset in="dispBlue" dx="-90" dy="0" result="dispBlueShifted"></feOffset>
+          <feMerge result="dispBlueAligned"><feMergeNode in="SourceGraphic"></feMergeNode><feMergeNode in="dispBlueShifted"></feMergeNode></feMerge>
+          <feColorMatrix in="dispBlueAligned" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="blue"></feColorMatrix>
+          <feBlend in="red" in2="green" mode="screen" result="rg"></feBlend>
+          <feBlend in="rg" in2="blue" mode="screen" result="output"></feBlend>
+          <feGaussianBlur in="output" stdDeviation="0.5"></feGaussianBlur>
+        </filter>
+        <filter id="mineradio-search-box-glass-filter" color-interpolation-filters="sRGB" x="-24%" y="-34%" width="158%" height="168%">
+          <feImage id="search-box-glass-map" x="-10%" y="-4%" width="120%" height="108%" preserveAspectRatio="none" result="map"></feImage>
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="180" xChannelSelector="R" yChannelSelector="B" result="dispRed"></feDisplacementMap>
+          <feOffset in="dispRed" dx="-90" dy="0" result="dispRedShifted"></feOffset>
+          <feMerge result="dispRedAligned"><feMergeNode in="SourceGraphic"></feMergeNode><feMergeNode in="dispRedShifted"></feMergeNode></feMerge>
+          <feColorMatrix in="dispRedAligned" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red"></feColorMatrix>
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="170" xChannelSelector="R" yChannelSelector="B" result="dispGreen"></feDisplacementMap>
+          <feOffset in="dispGreen" dx="-90" dy="0" result="dispGreenShifted"></feOffset>
+          <feMerge result="dispGreenAligned"><feMergeNode in="SourceGraphic"></feMergeNode><feMergeNode in="dispGreenShifted"></feMergeNode></feMerge>
+          <feColorMatrix in="dispGreenAligned" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="green"></feColorMatrix>
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="160" xChannelSelector="R" yChannelSelector="B" result="dispBlue"></feDisplacementMap>
+          <feOffset in="dispBlue" dx="-90" dy="0" result="dispBlueShifted"></feOffset>
+          <feMerge result="dispBlueAligned"><feMergeNode in="SourceGraphic"></feMergeNode><feMergeNode in="dispBlueShifted"></feMergeNode></feMerge>
+          <feColorMatrix in="dispBlueAligned" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="blue"></feColorMatrix>
+          <feBlend in="red" in2="green" mode="screen" result="rg"></feBlend>
+          <feBlend in="rg" in2="blue" mode="screen" result="output"></feBlend>
+          <feGaussianBlur in="output" stdDeviation="0.5"></feGaussianBlur>
+        </filter>
+        <filter id="mineradio-search-pill-glass-filter" color-interpolation-filters="sRGB" x="-48%" y="-68%" width="210%" height="236%">
+          <feImage id="search-pill-glass-map" x="-24%" y="-14%" width="148%" height="128%" preserveAspectRatio="none" result="map"></feImage>
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="118" xChannelSelector="R" yChannelSelector="B" result="dispRed"></feDisplacementMap>
+          <feOffset in="dispRed" dx="-34" dy="0" result="dispRedShifted"></feOffset>
+          <feMerge result="dispRedAligned"><feMergeNode in="SourceGraphic"></feMergeNode><feMergeNode in="dispRedShifted"></feMergeNode></feMerge>
+          <feColorMatrix in="dispRedAligned" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red"></feColorMatrix>
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="108" xChannelSelector="R" yChannelSelector="B" result="dispGreen"></feDisplacementMap>
+          <feOffset in="dispGreen" dx="-34" dy="0" result="dispGreenShifted"></feOffset>
+          <feMerge result="dispGreenAligned"><feMergeNode in="SourceGraphic"></feMergeNode><feMergeNode in="dispGreenShifted"></feMergeNode></feMerge>
+          <feColorMatrix in="dispGreenAligned" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="green"></feColorMatrix>
+          <feDisplacementMap in="SourceGraphic" in2="map" scale="100" xChannelSelector="R" yChannelSelector="B" result="dispBlue"></feDisplacementMap>
+          <feOffset in="dispBlue" dx="-34" dy="0" result="dispBlueShifted"></feOffset>
+          <feMerge result="dispBlueAligned"><feMergeNode in="SourceGraphic"></feMergeNode><feMergeNode in="dispBlueShifted"></feMergeNode></feMerge>
+          <feColorMatrix in="dispBlueAligned" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="blue"></feColorMatrix>
+          <feBlend in="red" in2="green" mode="screen" result="rg"></feBlend>
+          <feBlend in="rg" in2="blue" mode="screen" result="output"></feBlend>
+          <feGaussianBlur in="output" stdDeviation="0.35"></feGaussianBlur>
+        </filter>
+      </defs>
+    </svg>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

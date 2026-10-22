@@ -1,0 +1,17 @@
+**
+!LICENSE
+!THIRD_PARTY_NOTICES.md
+!licenses
+!licenses/**
+!server
+!server/**
+!client
+!client/dist
+!client/dist/**
+server/node_modules
+server/.env
+server/runtimeConfig.json
+server/adminConfig.json
+server/setup.lock
+server/downloads
+server/*.test.js

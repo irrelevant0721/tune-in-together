@@ -1,0 +1,79 @@
+name: Flutter Android APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      server_url:
+        description: '后端站点 URL（写入 OM_SERVER_URL）'
+        required: true
+        default: 'https://your-host'
+      build_type:
+        description: '构建类型'
+        required: true
+        default: release
+        type: choice
+        options:
+          - debug
+          - release
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # CI 只使用公开 pub.dev 包；隔离用户级 Dart 配置以避免缓存或 runner 中的无效令牌导致 403。
+      XDG_CONFIG_HOME: /tmp/dart-config
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: mobile
+        run: |
+          flutter pub get
+
+      - name: Verify Android project
+        working-directory: mobile
+        run: |
+          test -f android/settings.gradle.kts
+          test -f android/app/src/main/AndroidManifest.xml
+
+      - name: Build APK
+        working-directory: mobile
+        env:
+          OM_SERVER_URL: ${{ inputs.server_url }}
+        run: |
+          if [ "${{ inputs.build_type }}" = "release" ]; then
+            node scripts/build-flutter-apk.mjs --release --server-url="$OM_SERVER_URL"
+            cp build/app/outputs/flutter-apk/app-release.apk ../openmusic.apk
+          else
+            node scripts/build-flutter-apk.mjs --server-url="$OM_SERVER_URL"
+            cp build/app/outputs/flutter-apk/app-debug.apk ../openmusic.apk
+          fi
+
+      - name: Prepare server download
+        run: |
+          mkdir -p server/downloads
+          cp openmusic.apk server/downloads/openmusic.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openmusic-${{ inputs.build_type }}-apk
+          path: |
+            openmusic.apk
+            server/downloads/openmusic.apk

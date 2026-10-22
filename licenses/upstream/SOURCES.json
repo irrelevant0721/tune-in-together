@@ -1,0 +1,34 @@
+[
+  {
+    "repo": "XxHuberrr/Mineradio-paused",
+    "commit": "d43de565acabfdc1a9c9820a27e81a98ccbebcef",
+    "source": "https://raw.githubusercontent.com/XxHuberrr/Mineradio-paused/d43de565acabfdc1a9c9820a27e81a98ccbebcef/LICENSE",
+    "retrieved": "2026-10-22",
+    "file": "Mineradio-LICENSE.txt",
+    "sha256": "c4d8bfbb3a560aebaa544ad5e7b34513f9f3322d15d8860622f8065702b48c58"
+  },
+  {
+    "repo": "yin-yizhen/sonic-topography",
+    "commit": "ec8ecbaec0c9c5094b6b1480df0d6b2d32d6349b",
+    "source": "https://raw.githubusercontent.com/yin-yizhen/sonic-topography/ec8ecbaec0c9c5094b6b1480df0d6b2d32d6349b/LICENSE",
+    "retrieved": "2026-10-22",
+    "file": "sonic-topography-LICENSE.txt",
+    "sha256": "2dfac39fb6a692afdcc0754c8c6028208fb2a90e803a2fa4299df7807ee19242"
+  },
+  {
+    "repo": "DavidHDev/react-bits",
+    "commit": "e12c22192ac7b4b452c5e2feb9b586d74765d696",
+    "source": "https://raw.githubusercontent.com/DavidHDev/react-bits/e12c22192ac7b4b452c5e2feb9b586d74765d696/LICENSE.md",
+    "retrieved": "2026-10-22",
+    "file": "react-bits-LICENSE.txt",
+    "sha256": "4bdd1fa59a6b7d5954bc3b213dbc34e455c635a94bbcecf9293553797d0fad02"
+  },
+  {
+    "repo": "killercrush/music-tempo",
+    "commit": "0cbef63b57dbb2342394d3534776d6202c250ba9",
+    "source": "https://raw.githubusercontent.com/killercrush/music-tempo/0cbef63b57dbb2342394d3534776d6202c250ba9/LICENCE",
+    "retrieved": "2026-10-22",
+    "file": "music-tempo-LICENSE.txt",
+    "sha256": "74b5c2717b3ad10603d6609dcbab705ddd37968be33533351a1cbf9995241065"
+  }
+]

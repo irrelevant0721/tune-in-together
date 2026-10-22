@@ -1,0 +1,28 @@
+{
+  "name": "openmusic-server",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "start": "node index.js",
+    "lint": "eslint .",
+    "check": "npm run lint",
+    "test": "npm run check && node --test ./*.test.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.2.1",
+    "nanoid": "^5.1.0",
+    "nodemailer": "^10.0.14",
+    "qiniu": "^7.15.2",
+    "qrcode": "^1.5.4",
+    "redis": "^6.0.0",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "eslint": "^10.8.1",
+    "globals": "^17.11.0",
+    "socket.io-client": "^4.8.3"
+  }
+}

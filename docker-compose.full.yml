@@ -1,0 +1,96 @@
+# 全量版：OpenMusic + Redis + Meting-API。
+# 用法：复制 .env.full.example 为 .env，填入随机凭据后再启动。
+#       docker compose --env-file .env -f docker-compose.full.yml up -d
+#
+# Meting 管理后台仅监听宿主机回环地址；远程管理请使用 SSH 隧道。
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    networks:
+      - openmusic
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  meting:
+    image: w3126197382/meting-api:latest
+    restart: unless-stopped
+    networks:
+      openmusic:
+        aliases:
+          - meting-api
+    ports:
+      - "127.0.0.1:${METING_PORT:-3000}:3000"
+    environment:
+      ADMIN_PATH: ${METING_ADMIN_PATH:?请在 .env 中设置随机 METING_ADMIN_PATH}
+      ADMIN_USERNAME: ${METING_ADMIN_USERNAME:?请在 .env 中设置 METING_ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${METING_ADMIN_PASSWORD:?请在 .env 中设置强 METING_ADMIN_PASSWORD}
+    volumes:
+      - ./data/meting:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3000"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  openmusic:
+    image: w3126197382/openmusic:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    stop_grace_period: 30s
+    networks:
+      - openmusic
+    ports:
+      - "${OPENMUSIC_PORT:-4000}:4000"
+    environment:
+      PORT: 4000
+      NODE_ENV: production
+      DOCKER_REDIS_URL: redis://redis:6379/0
+      DOCKER_METING_URL: http://meting-api:3000
+      ROOM_CREDENTIAL_ENCRYPTION_KEY: ${ROOM_CREDENTIAL_ENCRYPTION_KEY:?请在 .env 中设置 ROOM_CREDENTIAL_ENCRYPTION_KEY}
+    volumes:
+      - type: bind
+        source: ./data/.env
+        target: /app/server/.env
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./data/runtimeConfig.json
+        target: /app/server/runtimeConfig.json
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./data/adminConfig.json
+        target: /app/server/adminConfig.json
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./data/setup.lock
+        target: /app/server/setup.lock
+        bind:
+          create_host_path: false
+      - ./data/downloads:/app/server/downloads
+    depends_on:
+      redis:
+        condition: service_healthy
+      meting:
+        condition: service_healthy
+
+volumes:
+  redis-data:
+
+networks:
+  openmusic:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${OPENMUSIC_NETWORK_SUBNET:-172.30.80.0/24}

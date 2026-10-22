@@ -1,0 +1,66 @@
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    networks:
+      - openmusic
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  openmusic:
+    image: w3126197382/openmusic:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    stop_grace_period: 30s
+    networks:
+      - openmusic
+    ports:
+      - "${OPENMUSIC_PORT:-4000}:4000"
+    environment:
+      PORT: 4000
+      NODE_ENV: production
+      DOCKER_REDIS_URL: redis://redis:6379/0
+    volumes:
+      # 首次部署向导与管理后台写入的配置需要持久化，否则容器重建后清空
+      - type: bind
+        source: ./data/.env
+        target: /app/server/.env
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./data/runtimeConfig.json
+        target: /app/server/runtimeConfig.json
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./data/adminConfig.json
+        target: /app/server/adminConfig.json
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./data/setup.lock
+        target: /app/server/setup.lock
+        bind:
+          create_host_path: false
+      - ./data/downloads:/app/server/downloads
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  redis-data:
+
+networks:
+  openmusic:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${OPENMUSIC_NETWORK_SUBNET:-172.30.80.0/24}

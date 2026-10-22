@@ -1,0 +1,18 @@
+Non-Commercial Learning License
+
+Copyright (c) 2026 Sonic Topography contributors
+
+This project is provided only for learning, research, and personal non-commercial use.
+
+You may:
+- read, study, and modify the source code for learning;
+- run the project locally for personal non-commercial use;
+- share non-commercial study notes or screenshots with attribution.
+
+You may not, without explicit written permission from the copyright holder:
+- use this project or derived works for commercial projects;
+- use it for commercial performances, commercial exhibitions, paid services, resale, advertising services, or other profit-making activities;
+- sell, sublicense, rent, or package it as a paid product;
+- remove copyright, license, or non-commercial notices.
+
+This project is provided "as is", without warranty of any kind. The copyright holder is not liable for any claims, damages, or other liability arising from use of the project.

@@ -1,0 +1,60 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+.idea/
+*.log
+*.class
+*.pyc
+.DS_Store
+
+# 环境变量（保留 .env.example）
+.env
+.env.local
+
+# Android 本地签名
+*.jks
+*.keystore
+key.properties
+**/local.properties
+
+# Android / Gradle 构建与 NDK 缓存
+android/.gradle/
+android/**/build/
+android/**/.cxx/
+android/**/.externalNativeBuild/
+android/captures/
+android/**/*.apk
+android/**/*.aab
+android/**/gradle-wrapper.jar
+
+# iOS / Xcode
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/ephemeral/
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/**/DerivedData/
+ios/**/xcuserdata/
+ios/**/*.ipa
+
+# Windows / macOS / Linux 桌面构建
+windows/flutter/ephemeral/
+linux/flutter/ephemeral/
+macos/Flutter/ephemeral/
+**/native_assets/
+
+# 测试 / 覆盖率
+coverage/
+.test_coverage/
+
+# 编辑器（本地配置不入库）
+.vscode/
+*.swp
+*.swo

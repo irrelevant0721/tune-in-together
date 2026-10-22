@@ -1,0 +1,5 @@
+export const headerIconCls =
+  'home-header-icon group/hicon relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/[0.03] text-white/55 outline-none transition-[color,background,border-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/[0.1] hover:text-white hover:shadow-[0_8px_22px_rgba(0,0,0,0.35)] active:translate-y-0 active:scale-[0.98] focus-visible:text-white focus-visible:ring-2 focus-visible:ring-netease-red/40';
+
+export const headerPillCls =
+  'home-header-pill group/pill inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/[0.03] px-2.5 py-2 text-sm font-medium text-white/65 outline-none transition-[color,background,border-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/[0.1] hover:text-white hover:shadow-[0_8px_22px_rgba(0,0,0,0.3)] active:translate-y-0 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-netease-red/40 sm:px-3.5';

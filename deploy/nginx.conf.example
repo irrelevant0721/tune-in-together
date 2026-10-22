@@ -1,0 +1,269 @@
+# OpenMusic Nginx 示例：静态直出前端，仅动态回 Node
+# 不要用 location / { proxy_pass 4000; }，否则 JS/CSS 全走 Node，前端会很卡。
+#
+# 替换：
+#   your-domain.com
+#   /www/openmusic/client/dist  → 前端构建目录
+#   127.0.0.1:4000             → Node 端口
+# 保存后：nginx -t && nginx -s reload
+#
+# 完整宝塔版见 nginx.baota-optimized.conf.example
+
+server {
+    listen 80;
+    listen 443 ssl http2;
+    server_name your-domain.com;
+
+    root /www/openmusic/client/dist;
+    index index.html;
+
+    # SSL 证书路径按宝塔实际填写
+    # ssl_certificate     /www/server/panel/vhost/cert/your-domain.com/fullchain.pem;
+    # ssl_certificate_key /www/server/panel/vhost/cert/your-domain.com/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+
+    gzip on;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 4;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css text/xml application/javascript application/json application/xml image/svg+xml;
+    # 若 Nginx 编译了 ngx_brotli，可开启静态 Brotli；否则保留 gzip 即可。
+    # brotli on;
+    # brotli_static on;
+    # brotli_comp_level 4;
+
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+
+    # —— 仅下列路径反代到 Node ——
+
+    location /socket.io/ {
+        proxy_pass http://127.0.0.1:4000/socket.io/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+        proxy_buffering off;
+        proxy_read_timeout 86400;
+        proxy_send_timeout 86400;
+    }
+
+    # 必须写在 /api/ 前面：音频 Range 流式转发
+    location ^~ /api/media-proxy {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+        proxy_set_header Range $http_range;
+        proxy_set_header If-Range $http_if_range;
+        proxy_buffering off;
+        proxy_request_buffering off;
+        proxy_max_temp_file_size 0;
+        proxy_force_ranges on;
+        gzip off;
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+    }
+
+    location ^~ /api/ {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 600s;
+        proxy_read_timeout 600s;
+    }
+
+    location ^~ /downloads/ {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+        proxy_read_timeout 600s;
+        proxy_send_timeout 600s;
+    }
+
+    location ^~ /wx-proxy {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+    }
+
+    location ^~ /cgi-bin/ {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+    }
+
+    location = /robots.txt {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+    }
+
+    location = /sitemap.xml {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+    }
+
+    # 首页 HTML 走 Node，保证百度验证 meta 写入源码
+    location = / {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+    }
+
+    location = /index.html {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+    }
+
+    # 动态会话页由 Node 返回 X-Robots-Tag: noindex，避免被收录。
+    location ~ ^/(room|tv)/[^/]+/?$ {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+    }
+
+    # /admin 与自定义后台入口由 Node 校验；不匹配配置的随机路径会返回 404。
+    location = /admin {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+    }
+
+    location ~ ^/[A-Za-z0-9_-]{8,64}$ {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+    }
+
+    # —— 静态直出（不要 proxy_pass）——
+
+    location ^~ /assets/ {
+        # 构建产物带 content hash，可长期缓存；发版后无需清此路径也可拿到新文件
+        expires 1y;
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        access_log off;
+        try_files $uri =404;
+    }
+
+    location ^~ /qface/ {
+        expires 7d;
+        add_header Cache-Control "public, max-age=604800" always;
+        access_log off;
+        try_files $uri =404;
+    }
+
+    # Sonic Workshop 的 sandbox iframe 使用 opaque origin；仅为公开静态资源允许 Origin: null，不允许凭据。
+    location ^~ /vendor/sonic-workshop/ {
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000" always;
+        add_header Access-Control-Allow-Origin "null" always;
+        access_log off;
+        try_files $uri =404;
+    }
+
+    location ^~ /vendor/ {
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000" always;
+        access_log off;
+        try_files $uri =404;
+    }
+
+    location = /favicon.svg {
+        expires 7d;
+        add_header Cache-Control "public, max-age=604800" always;
+        access_log off;
+    }
+
+    location = /og-cover.png {
+        expires 7d;
+        add_header Cache-Control "public, max-age=604800" always;
+        access_log off;
+    }
+
+    # 未知路径保持 404 状态，同时交给前端展示 404 页面。
+    location / {
+        error_page 404 = @openmusic_not_found;
+        try_files $uri $uri/ =404;
+    }
+
+    location @openmusic_not_found {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header iqp $http_iqp;
+        proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;
+    }
+}

@@ -1,0 +1,38 @@
+# 响度增强覆盖：与 docker-compose.full.yml 一起使用。
+
+services:
+  loudness:
+    image: ghcr.io/qq01-hub/openmusic-meting-api-audio-loudness:latest
+    restart: unless-stopped
+    networks:
+      openmusic:
+        aliases:
+          - meting-api-audio-loudness
+    init: true
+    stop_grace_period: 10s
+    environment:
+      PORT: "3100"
+      REDIS_URL: redis://redis:6379
+      MAX_DOWNLOAD_BYTES: "67108864"
+      REQUEST_TIMEOUT_MS: "30000"
+      ANALYSIS_CONCURRENCY: "2"
+      ANALYSIS_QUEUE_LIMIT: "16"
+      ANALYSIS_QUEUE_TIMEOUT_MS: "2000"
+      CACHE_OPERATION_TIMEOUT_MS: "500"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3100/healthz').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    mem_limit: 1g
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  meting:
+    environment:
+      LOUDNESS_SERVICE_URL: http://meting-api-audio-loudness:3100/analyze
+    depends_on:
+      loudness:
+        condition: service_healthy

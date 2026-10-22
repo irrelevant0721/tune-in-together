@@ -1,0 +1,58 @@
+name: friends-music
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - friends-redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+  meting:
+    image: w3126197382/meting-api:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3400:3000"
+    environment:
+      ADMIN_PATH: ${METING_ADMIN_PATH:?missing METING_ADMIN_PATH}
+      ADMIN_USERNAME: ${METING_ADMIN_USERNAME:?missing METING_ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${METING_ADMIN_PASSWORD:?missing METING_ADMIN_PASSWORD}
+    volumes:
+      - ./data/meting:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  openmusic:
+    image: friends-music:20261009
+    build:
+      context: .
+      dockerfile: Dockerfile.friends
+    restart: unless-stopped
+    stop_grace_period: 30s
+    ports:
+      - "127.0.0.1:4000:4000"
+    environment:
+      PORT: 4000
+      NODE_ENV: production
+      DOCKER_REDIS_URL: redis://redis:6379/0
+      DOCKER_METING_URL: http://meting:3000
+      CLIENT_URL: https://music.example.com,http://127.0.0.1:4000,http://localhost:4000
+      ROOM_CREDENTIAL_ENCRYPTION_KEY: ${ROOM_CREDENTIAL_ENCRYPTION_KEY:?missing encryption key}
+    volumes:
+      - ./data/.env:/app/server/.env
+      - ./data/runtimeConfig.json:/app/server/runtimeConfig.json
+      - ./data/adminConfig.json:/app/server/adminConfig.json
+      - ./data/setup.lock:/app/server/setup.lock
+      - ./data/downloads:/app/server/downloads
+    depends_on:
+      redis:
+        condition: service_healthy
+      meting:
+        condition: service_healthy
+volumes:
+  friends-redis:

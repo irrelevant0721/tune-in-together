@@ -1,0 +1,27 @@
+{
+  "name": "OpenMusic",
+  "short_name": "OpenMusic",
+  "description": "一起听歌 - 和喜欢的人 听同一首歌",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#101012",
+  "theme_color": "#ec4141",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

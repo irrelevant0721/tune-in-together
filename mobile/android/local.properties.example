@@ -1,0 +1,7 @@
+# This file tracks properties of this Flutter project.
+# Used by Flutter tool to communicate with gradle.
+
+flutter.minSdkVersion=23
+flutter.targetSdkVersion=35
+flutter.compileSdkVersion=35
+flutter.ndkVersion=

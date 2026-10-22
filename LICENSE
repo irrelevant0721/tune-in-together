@@ -1,0 +1,32 @@
+MIT License (with Attribution Requirement)
+
+Copyright (c) 2026 小Q
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+1. The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Software.
+
+2. Attribution Requirement: Any public distribution, deployment, or derivative
+   work of the Software must retain a clearly visible attribution to the
+   original project, including the project name "OpenMusic" and a link to the
+   original repository (https://github.com/qq01-hub/openmusic), in the
+   documentation (e.g. README) and/or the "About" section of the product.
+
+   注明出处要求：对本软件的任何公开分发、部署或衍生作品，必须以清晰可见的
+   方式保留对原项目的署名，包括项目名称「OpenMusic」及原始仓库链接
+   （https://github.com/qq01-hub/openmusic），标注位置为文档（如 README）
+   和/或产品的「关于」页面。
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
